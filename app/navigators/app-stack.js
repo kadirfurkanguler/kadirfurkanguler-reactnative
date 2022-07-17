@@ -1,4 +1,8 @@
-import {CategoriesScreen, ProductDetailScreen} from '../screens';
+import {
+  AddProductScreen,
+  CategoriesScreen,
+  ProductDetailScreen,
+} from '../screens';
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import style from './style';
@@ -16,6 +20,10 @@ export const AppStack = () => {
           <Stack.Screen
             name="product-detail-screen"
             component={ProductDetailScreen}
+          />
+          <Stack.Screen
+            name="add-product-screen"
+            component={AddProductScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

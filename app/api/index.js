@@ -7,8 +7,19 @@ const categories = createAsyncThunk('categories/categories', async () => {
   const res = await axios.get('categories');
   return res.data;
 });
-const products = createAsyncThunk('products/products', async data => {
+const products = createAsyncThunk('products/products', async () => {
   const res = await axios.get('products');
   return res.data;
 });
-export {categories, products};
+const addProduct = createAsyncThunk(
+  'products/addproduct',
+  async (data, thunkAPI) => {
+    const res = await axios.post('products', {
+      ...data,
+      developerEmail: 'kadirfurkanguler@gmail.com',
+    });
+    thunkAPI.dispatch(products());
+    return res.data;
+  },
+);
+export {categories, products, addProduct};

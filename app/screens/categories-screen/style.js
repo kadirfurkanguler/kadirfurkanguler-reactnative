@@ -37,5 +37,5 @@ export default StyleSheet.create({
   add: {
     fontSize: 30,
     color: colors.black,
-  }
+  },
 });

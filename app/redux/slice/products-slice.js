@@ -1,12 +1,18 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {products} from '../../api';
+import {addProduct, products} from '../../api';
 export const product = createSlice({
   name: 'product',
   initialState: {
     isLoading: {},
     error: null,
   },
-  reducers: {},
+  reducers: {
+    reset: state => {
+      state.isLoading = {};
+      state.error = null;
+      state.add_response = undefined;
+    },
+  },
   extraReducers: {
     [products.pending]: state => {
       state.isLoading.product = true;
@@ -19,6 +25,18 @@ export const product = createSlice({
       state.isLoading.product = false;
       state.error = action.error;
     },
+    [addProduct.pending]: state => {
+      state.isLoading.addProduct = true;
+    },
+    [addProduct.fulfilled]: (state, action) => {
+      state.isLoading.addProduct = false;
+      state.add_response = action.payload;
+    },
+    [addProduct.rejected]: (state, action) => {
+      state.isLoading.addProduct = false;
+      state.error = action.error;
+    },
   },
 });
+export const {reset} = product.actions;
 export default product.reducer;

@@ -11,10 +11,12 @@ import style from './style';
 import {categories, products} from '../../api';
 import {useDispatch, useSelector} from 'react-redux';
 import {Filter, Product} from '../../components';
+import {useNavigation} from '@react-navigation/native';
 import strings from '../../utils/strings';
 import colors from '../../utils/colors';
 export const CategoriesScreen = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {data: categorydata, isLoading: categoryLoading} = useSelector(
     state => state.categories,
   );
@@ -59,6 +61,9 @@ export const CategoriesScreen = () => {
     dispatch(categories());
     dispatch(products());
   };
+  const addProduct = () => {
+    navigation.navigate('add-product-screen');
+  };
 
   const renderItem = ({item}) => {
     return <Filter item={item} selected={selected} setSelected={setSelected} />;
@@ -89,7 +94,10 @@ export const CategoriesScreen = () => {
           keyExtractor={(item, index) => index}
         />
       </View>
-      <TouchableOpacity activeOpacity={0.6} style={style.add_container}>
+      <TouchableOpacity
+        onPress={addProduct}
+        activeOpacity={0.6}
+        style={style.add_container}>
         <Text style={style.add}>+</Text>
       </TouchableOpacity>
     </View>
