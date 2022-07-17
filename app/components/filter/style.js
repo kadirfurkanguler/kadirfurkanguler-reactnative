@@ -6,23 +6,24 @@ export default StyleSheet.create({
     selected: {
       backgroundColor: colors.white,
       paddingHorizontal: 10,
-      marginVertical: 10,
       flex: 1,
       marginHorizontal: 3,
       borderRadius: 10,
       borderColor: colors.black,
       borderWidth: 1,
+      alignItems: 'center',
       paddingVertical: 5,
+      justifyContent: 'center',
     },
     non_selected: {
       backgroundColor: colors.black,
       paddingHorizontal: 10,
-      marginVertical: 10,
-      flex: 1,
       marginHorizontal: 3,
       borderRadius: 10,
       paddingVertical: 5,
-      borderWidth:1
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
     },
   },
   title: {

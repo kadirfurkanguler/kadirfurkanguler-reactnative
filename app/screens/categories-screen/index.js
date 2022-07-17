@@ -1,29 +1,79 @@
-import React, {useState} from 'react';
-import {View, Text, FlatList, ScrollView} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  ActivityIndicator,
+  TouchableOpacity,
+} from 'react-native';
 import style from './style';
+import {categories, products} from '../../api';
+import {useDispatch, useSelector} from 'react-redux';
 import {Filter, Product} from '../../components';
 import strings from '../../utils/strings';
+import colors from '../../utils/colors';
 export const CategoriesScreen = () => {
-  const all = {id: 0, name: strings.all};
-  const dummyData = [
-    {createdAt: '2022-04-14T18:27:19.838Z', name: 'Electronic', id: '1'},
-    {createdAt: '2022-04-14T18:27:19.838Z', name: 'Furnitures', id: '2'},
-    {createdAt: '2022-04-14T18:27:19.838Z', name: 'Clothing', id: '3'},
-    {createdAt: '2022-04-14T18:27:19.838Z', name: 'Accessories', id: '4'},
-  ];
-  const data = [all, ...dummyData];
+  const dispatch = useDispatch();
+  const {data: categorydata, isLoading: categoryLoading} = useSelector(
+    state => state.categories,
+  );
+  const {data: productData, isLoading: productLoading} = useSelector(
+    state => state.products,
+  );
 
+  const all = {id: 0, name: strings.all};
+  const [data, setData] = useState([all]);
+  const [productList, setProductList] = useState([]);
   const [selected, setSelected] = useState(data[0]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (categorydata?.length > 0) {
+      setData([all, ...categorydata]);
+    }
+  }, [categorydata]);
+
+  useEffect(() => {
+    if (productData?.length > 0) {
+      setProductList(productData);
+    }
+  }, [productData]);
+
+  useEffect(() => {
+    if (productData?.length > 0) {
+      if (selected.id != 0) {
+        setProductList(
+          productData.filter(item => item.category === selected.name),
+        );
+      } else {
+        setProductList(productData);
+      }
+    }
+  }, [selected]);
+
+  const getData = () => {
+    dispatch(categories());
+    dispatch(products());
+  };
+
   const renderItem = ({item}) => {
     return <Filter item={item} selected={selected} setSelected={setSelected} />;
   };
   const renderProduct = ({item}) => {
     return <Product item={item} />;
   };
-  return (
+  return categoryLoading?.category || productLoading?.product ? (
+    <View style={style.loading_container}>
+      <ActivityIndicator size="large" color={colors.black} />
+    </View>
+  ) : (
     <View style={style.container}>
       <Text style={style.title}>{strings.app_name}</Text>
-      <ScrollView style={{height: 50}} horizontal>
+      <ScrollView horizontal>
         <FlatList
           horizontal
           data={data}
@@ -31,12 +81,17 @@ export const CategoriesScreen = () => {
           keyExtractor={(item, index) => index}
         />
       </ScrollView>
-      <FlatList
-        numColumns={2}
-        data={data}
-        renderItem={renderProduct}
-        keyExtractor={(item, index) => index}
-      />
+      <View style={style.content}>
+        <FlatList
+          numColumns={2}
+          data={productList}
+          renderItem={renderProduct}
+          keyExtractor={(item, index) => index}
+        />
+      </View>
+      <TouchableOpacity activeOpacity={0.6} style={style.add_container}>
+        <Text style={style.add}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };

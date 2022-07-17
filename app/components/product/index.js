@@ -1,16 +1,23 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import style from './style';
-
-export const Product = () => {
-  const source = {uri: 'https://picsum.photos/200'};
+import {useNavigation} from '@react-navigation/native';
+export const Product = ({item}) => {
+  const navigation = useNavigation();
+  const goDetail = () => {
+    navigation.navigate('product-detail-screen', {item});
+  };
+  const source = {uri: item.avatar};
   return (
-    <View style={style.container}>
+    <TouchableOpacity
+      onPress={goDetail}
+      activeOpacity={0.7}
+      style={style.container}>
       <Image style={style.image} source={source} />
       <View style={style.content}>
-        <Text style={style.title}>Product Title</Text>
-        <Text style={style.price}>$300</Text>
+        <Text style={style.title}>{item.name}</Text>
+        <Text style={style.price}>${item.price}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

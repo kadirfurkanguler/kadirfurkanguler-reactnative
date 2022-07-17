@@ -1,2 +1,3 @@
 import categoriesSlice from './categories-slice';
-export {categoriesSlice};
+import productsSlice from './products-slice';
+export {categoriesSlice, productsSlice};

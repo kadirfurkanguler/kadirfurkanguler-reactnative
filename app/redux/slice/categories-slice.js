@@ -1,25 +1,24 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {categories} from '../../api';
-export const categoires = createSlice({
-  name: 'categoires',
+export const category = createSlice({
+  name: 'category',
   initialState: {
-    isLoading: false,
+    isLoading: {},
     error: null,
   },
   reducers: {},
   extraReducers: {
     [categories.pending]: state => {
-      state.isLoading.categoires = true;
+      state.isLoading.category = true;
     },
     [categories.fulfilled]: (state, action) => {
-      state.isLoading.categoires = false;
+      state.isLoading.category = false;
       state.data = action.payload;
     },
     [categories.rejected]: (state, action) => {
-      state.isLoading.categoires = false;
+      state.isLoading.category = false;
       state.error = action.error;
     },
   },
 });
-export const {reset} = categoires.actions;
-export default categoires.reducer;
+export default category.reducer;
